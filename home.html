@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My valentine? ❤️</title>
+    <style>
+        body {
+            background-color: #ffe6f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.2);
+        }
+        h1 {
+            color: #ff0066;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            animation: heartbeat 1.5s infinite;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .gif-container {
+            margin: 20px 0;
+        }
+        .buttons {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            min-height: 60px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        #yesBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #noBtn {
+            background-color: #f44336;
+            color: white;
+            transition: none !important;
+            position: static;
+        }
+        button:hover {
+            transform: scale(1.1);
+        }
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .heart {
+            position: fixed;
+            color: #ff0066;
+            animation: floatUp 3s linear forwards;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        #timer {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #ff0066;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Will you be my valentine gorgeous girl? 💝</h1>
+        
+        <div class="gif-container">
+            <img src="video.gif" alt="Cute GIF" width="200">
+        </div>
+        <div class="buttons">
+            <button id="yesBtn">Yes! 😍</button>
+            <button id="noBtn">No 😢</button>
+        </div>
+        <div id="timer"></div>
+    </div>
+    <div class="hearts" id="heartsContainer"></div>
+
+    <script>
+        // Declare variables
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const heartsContainer = document.getElementById('heartsContainer');
+        const container = document.querySelector('.container');
+        const timerDiv = document.getElementById('timer');
+
+        let timeLeft = 15;
+
+        // Start countdown timer
+        const interval = setInterval(() => {
+            timeLeft--;
+            timerDiv.textContent = `Time left: ${timeLeft} seconds`;
+            if (timeLeft === 0) {
+                clearInterval(interval);
+                alert("Time's up! You only get one chance THE DAWG!");
+            }
+        }, 1000);
+
+        // No button hover effect - move anywhere in container
+        noBtn.addEventListener('mouseover', () => {
+            const containerRect = container.getBoundingClientRect();
+            const btnRect = noBtn.getBoundingClientRect();
+            
+            const maxX = containerRect.width - btnRect.width;
+            const maxY = containerRect.height - btnRect.height;
+            
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        });
+
+        // Reset position when mouse leaves container
+        container.addEventListener('mouseleave', () => {
+            noBtn.style.position = 'static';
+        });
+
+        // No button click prevention
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert("You can't say no! 😉 Try the other button!");
+        });
+
+        // Yes button celebration - Heart Explosion
+        yesBtn.addEventListener('click', () => {
+            for (let i = 0; i < 100; i++) {
+                createHeart();
+            }
+
+            setTimeout(() => {
+                window.location.href = "valentine-success.html";
+            }, 1000);
+        });
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw'; // Random horizontal position
+            heart.style.bottom = '0'; // Start at the bottom
+            heart.style.position = 'fixed'; // Use fixed positioning for full-screen effect
+            const size = Math.random() * 30 + 20; // Random size between 20px and 50px
+            heart.style.fontSize = size + 'px';
+            const duration = Math.random() * 3 + 2; // Random duration between 2s and 5s
+            heart.style.animationDuration = duration + 's';
+            heartsContainer.appendChild(heart);
+
+            // Remove heart after animation ends
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+    </script>
+</body>
+</html>

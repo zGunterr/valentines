@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Confirmed ❤️</title>
+    <style>
+        body {
+            background-color: #ffe6f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.2);
+            max-width: 500px;
+        }
+        h1 {
+            color: #ff0066;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .details {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .details div {
+            margin-bottom: 10px;
+        }
+        #map {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+            border-radius: 20px;
+        }
+        /* Hide the audio controls */
+        audio {
+            display: none;
+        }
+        /* Play Game Button */
+        #playGameButton {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+        #playGameButton:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reservation Confirmed! ❤️</h1>
+        <p>Your romantic dinner is all set!</p>
+
+        <div class="details" id="reservationDetails">
+            <!-- Reservation details will be dynamically inserted here -->
+        </div>
+
+        <!-- Map Container -->
+        <div id="map"></div>
+        <p>Wanna play a game? 👀</p>
+        <!-- Play Game Button -->
+        <button id="playGameButton">Play Game</button>
+    </div>
+
+    <!-- Background Sound -->
+    <audio autoplay loop>
+        <source src="background-sound.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeCsusmIvyrv2fGt2CFHs8V4HiUnXWQAQ&callback=initMap" async defer></script>
+    <script>
+        // Retrieve the selected restaurant from localStorage
+        const selectedRestaurant = JSON.parse(localStorage.getItem('selectedRestaurant'));
+
+        if (selectedRestaurant) {
+            const detailsDiv = document.getElementById('reservationDetails');
+            detailsDiv.innerHTML = `
+                <div><strong>Restaurant:</strong> ${selectedRestaurant.name}</div>
+                <div><strong>Address:</strong> ${selectedRestaurant.address}</div>
+                <div><strong>Date:</strong> ${selectedRestaurant.date}</div>
+                <div><strong>Time:</strong> ${selectedRestaurant.time}</div>
+            `;
+        } else {
+            document.body.innerHTML = "<h1>Error: No reservation found!</h1>";
+        }
+
+        // Initialize the map
+        function initMap() {
+            if (selectedRestaurant) {
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    center: selectedRestaurant.location,
+                    zoom: 15,
+                });
+                new google.maps.Marker({
+                    position: selectedRestaurant.location,
+                    map: map,
+                });
+            }
+        }
+
+        // Play Game Button Functionality
+        document.getElementById('playGameButton').addEventListener('click', () => {
+            window.location.href = "game/index.html"; // Redirect to the game folder
+        });
+    </script>
+</body>
+</html>

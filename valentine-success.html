@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yaaaaaay! ❤️</title>
+    <style>
+        body {
+            background-color: #ffe6f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+        .container {
+            background: white;
+            padding: 20px; /* Reduced padding */
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.2);
+            max-width: 700px; /* Increased container width */
+            margin: auto; /* Center the container */
+        }
+        h1 {
+            color: #ff0066;
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+        video {
+            width: 80%; /* Make video smaller (80% of container width) */
+            max-width: 400px; /* Set a maximum width for larger screens */
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .restaurant-options {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Reduced gap between buttons */
+            margin-top: 20px;
+            flex-wrap: nowrap; /* Ensure buttons stay in one line */
+        }
+        .restaurant-options button {
+            padding: 10px 20px; /* Reduced padding for buttons */
+            font-size: 1em; /* Slightly smaller font size */
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            transition: transform 0.3s ease;
+            flex: 1; /* Make buttons take equal space */
+        }
+        .restaurant-options button:hover {
+            transform: scale(1.1);
+        }
+        #restaurantDetails {
+            margin-top: 20px;
+        }
+        #restaurantImage {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            margin-top: 20px;
+            display: none; /* Hidden until a restaurant is selected */
+        }
+        #lockInButton {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #ff0066;
+            color: white;
+            transition: transform 0.3s ease;
+            display: none; /* Hidden until a restaurant is selected */
+        }
+        #lockInButton:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Yaaaaaay! 💖</h1>
+        
+        <!-- Video instead of GIF -->
+        <video autoplay loop muted playsinline>
+            <source src="videopizza.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <p>IMPORTANT DECISION !!!</p>
+        <p>Pick a restaurant:</p>
+        
+        <div class="restaurant-options">
+            <button data-restaurant="Italian">Italian 🍝</button>
+            <button data-restaurant="Sushi">Sushi 🍣</button>
+            <button data-restaurant="Mexican">Mexican 🌮</button>
+            <button data-restaurant="Boorgir">Boorgir 🍔</button>
+        </div>
+
+        <div id="restaurantDetails" style="display: none;">
+            <h2 id="restaurantName"></h2>
+            <p id="restaurantDescription"></p>
+        </div>
+
+        <!-- Restaurant Image -->
+        <img id="restaurantImage" src="" alt="Restaurant Image">
+
+        <!-- Lock In Button -->
+        <button id="lockInButton">Lock In</button>
+    </div>
+
+    <script>
+        const restaurants = {
+            Italian: {
+                name: "Shift",
+                description: "You already know the BIIIIG tagliatels cu creveti.",
+                location: { lat: 44.44491, lng: 26.10163 },
+                address: "Avenue, Strada General Eremia Grigorescu 17, București 010476",
+                date: "February 14, 2025",
+                time: "5:30 PM",
+                image: "paste.jpg", // Replace with your actual image file for Shift
+            },
+            Sushi: {
+                name: "Kanpai",
+                description: "Tempura 🤫 ",
+                location: { lat: 44.46235, lng: 26.09926 },
+                address: "Strada George Călinescu 49, București 011692",
+                date: "February 14, 2025",
+                time: "5:30 PM",
+                image: "sushi.jpg", // Replace with your actual image file for Sakura Sushi
+            },
+            Mexican: {
+                name: "Mexikanos",
+                description: "Es hora de comer !",
+                location: { lat: 44.43120, lng: 26.10301 },
+                address: "Strada Gabroveni 61, București 030167",
+                date: "February 14, 2025",
+                time: "5:30 PM",
+                image: "tacos.jpg", // Replace with your actual image file for Taco Loco
+            },
+            Boorgir: {
+                name: "Circus Pub",
+                description: "BOOOOOOOOOOOOORGIR",
+                location: { lat: 44.45942, lng: 26.11131 },
+                address: "Bulevardul Lacul Tei 65, București 020393",
+                date: "February 14, 2025",
+                time: "5:30 PM",
+                image: "boorgir.jpg", // Replace with your actual image file for Boorgir Bar
+            },
+        };
+
+        let selectedRestaurant = null;
+
+        document.querySelectorAll('.restaurant-options button').forEach(button => {
+            button.addEventListener('click', () => {
+                const restaurantKey = button.getAttribute('data-restaurant');
+                selectedRestaurant = restaurants[restaurantKey];
+                document.getElementById('restaurantName').textContent = selectedRestaurant.name;
+                document.getElementById('restaurantDescription').textContent = selectedRestaurant.description;
+                document.getElementById('restaurantDetails').style.display = 'block';
+                document.getElementById('restaurantImage').src = selectedRestaurant.image; // Set image source
+                document.getElementById('restaurantImage').style.display = 'block'; // Show the image
+                document.getElementById('lockInButton').style.display = 'block'; // Show the lock-in button
+            });
+        });
+
+        // Lock In Button Functionality
+        document.getElementById('lockInButton').addEventListener('click', () => {
+            if (selectedRestaurant) {
+                // Save the selected restaurant details to localStorage
+                localStorage.setItem('selectedRestaurant', JSON.stringify(selectedRestaurant));
+                // Redirect to confirmation page
+                window.location.href = "confirmation.html";
+            } else {
+                alert("Please select a restaurant first!");
+            }
+        });
+    </script>
+</body>
+</html>
